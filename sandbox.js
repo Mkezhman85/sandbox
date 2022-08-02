@@ -4,18 +4,8 @@ import { readdir } from 'node:fs/promises';
 import { pathInfo, saveKeyValue } from './services/storage.service.js';
 import { getArgs }  from './helpers/args.js'
 import { printHelp } from './services/log_service.js';
-
-const fileList = async (path) => {
-  try {
-    const files = await readdir(path);
-    console.log(chalk.bold(chalk.bgBlue(`Содержимое выбранной папки:`)), path)
-    for (const file of files)
-      console.log(file);
-  } catch (err) {
-    console.error(err);
-  }
-}
-
+import { getFiles } from './services/listfiles_service.js';
+import { App } from './classes/app.js';
 
 const initCLI = () => {
   const args = getArgs(process.argv)
@@ -30,6 +20,13 @@ const initCLI = () => {
   }
   if (args.p) {
     pathInfo()
+  }
+  if (args.d) {
+    console.log(getFiles(args.d))
+  }
+  if (args.e) {
+    const app = new App()
+    app.init()
   }
 }
 
